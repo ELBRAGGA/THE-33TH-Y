@@ -85,7 +85,7 @@ open index.html
 
 ## 👨‍💻 Author
 
-**Yahya Elbragga**
+**Yahya (Elbragga) Affan**
 - GitHub: [@ELBRAGGA](https://github.com/ELBRAGGA)
 - Project Link: [https://github.com/ELBRAGGA/THE-33TH-Y](https://github.com/ELBRAGGA/THE-33TH-Y)
 ```
