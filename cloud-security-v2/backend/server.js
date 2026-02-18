@@ -121,8 +121,8 @@ app.get('/api/records/:id', (req, res) => {
 app.listen(PORT, () => {
     console.log(`
     ╔═══════════════════════════════════════╗
-    ║         Vinyl Vault API               ║
-    ║     Where Music Lives Forever         ║
+    ║      THE 33RD Y - Vinyl Vault         ║
+    ║     Secure API - Version 2.0          ║
     ╚═══════════════════════════════════════╝
     `);
     console.log('🚀 Server Status:');
