@@ -1,15 +1,13 @@
-```markdown
 # THE 33RD Y - Vinyl Store Evolution 🎵
-
+```markdown
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Node.js](https://img.shields.io/badge/Node.js-18.x-green)](https://nodejs.org/)
 [![Express](https://img.shields.io/badge/Express-4.x-lightgrey)](https://expressjs.com/)
-
+```
 A vinyl store application showcasing my evolution from frontend developer (2024) to cloud security engineer (2026). The 2024 version is a static website, while the 2026 version transforms it into a full-stack application with enterprise-grade security features.
 
 ## 📁 Project Structure
-
-```
+```markdown
 THE-33TH-Y/
 ├── website/                 # Version 1.0 (2024) - Frontend only
 │   ├── index.html
