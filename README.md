@@ -1,4 +1,4 @@
-# THE 33RD Y - Vinyl Store Evolution 🎵
+# THE 33TH Y - Vinyl Store Evolution 🎵
 
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Node.js](https://img.shields.io/badge/Node.js-18.x-green)](https://nodejs.org/)
