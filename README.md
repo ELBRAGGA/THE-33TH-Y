@@ -6,7 +6,7 @@
 [![Netlify Status](https://img.shields.io/badge/deploy-live-success?logo=netlify)](https://the-33rd-y.netlify.app)
 
 ## 🌐 Live Demo
-**[View The 33rd Y Live](https://the-33rd-y.netlify.app)**  
+**[View The 33rd Y Live]([https://the-33rd-y.netlify.app](https://elbragga.github.io/THE-33TH-Y/))**  
 Experience the vinyl store in action! Fully functional frontend with secure backend API integration.
 
 A vinyl store application showcasing my evolution from frontend developer (2024) to cloud security engineer (2026). The 2024 version is a static website, while the 2026 version transforms it into a full-stack application with enterprise-grade security features.
