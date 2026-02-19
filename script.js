@@ -19,7 +19,6 @@ class ScrollAnimations {
             const sectionBottom = section.getBoundingClientRect().bottom;
             const windowHeight = window.innerHeight;
 
-            // Show section when it's 80% in viewport
             if (sectionTop < windowHeight * 0.8 && sectionBottom > 0) {
                 section.classList.add('visible');
             }
@@ -44,24 +43,104 @@ class VinylStore {
         this.updateCartCount();
     }
 
-    async loadInventory() {
-        try {
-            const response = await fetch('http://localhost:3000/api/records');
-            const data = await response.json();
-            this.inventory = data;
-            this.displayRecords();
-            console.log('✅ Records loaded from API:', data);
-        } catch (error) {
-            console.error('❌ Error loading records:', error);
-            this.inventory = [];
-            this.displayRecords();
-        }
+    loadInventory() {
+        this.inventory = [
+            {
+                id: 1,
+                albumName: "King of the Delta Blues",
+                artist: "Robert Johnson",
+                genre: "delta",
+                year: 1961,
+                condition: "Very Good",
+                rarity: "grail",
+                price: 4500,
+                quantity: 2
+            },
+            {
+                id: 2,
+                albumName: "Complete Recordings", 
+                artist: "Charley Patton",
+                genre: "delta",
+                year: 1990,
+                condition: "Near Mint",
+                rarity: "rare",
+                price: 3200,
+                quantity: 4
+            },
+            {
+                id: 3,
+                albumName: "Born Under a Bad Sign",
+                artist: "Albert King",
+                genre: "chicago", 
+                year: 1967,
+                condition: "Good",
+                rarity: "rare",
+                price: 2800,
+                quantity: 2
+            },
+            {
+                id: 4,
+                albumName: "Hard Again",
+                artist: "Muddy Waters",
+                genre: "chicago",
+                year: 1977, 
+                condition: "Near Mint",
+                rarity: "limited",
+                price: 2200,
+                quantity: 4
+            },
+            {
+                id: 5,
+                albumName: "Live at the Regal",
+                artist: "B.B. King",
+                genre: "chicago",
+                year: 1965,
+                condition: "Mint",
+                rarity: "grail",
+                price: 6800,
+                quantity: 3
+            },
+            {
+                id: 6,
+                albumName: "Texas Flood", 
+                artist: "Stevie Ray Vaughan",
+                genre: "texas",
+                year: 1983,
+                condition: "Near Mint",
+                rarity: "limited",
+                price: 1800,
+                quantity: 4
+            },
+            {
+                id: 7,
+                albumName: "From the Cradle",
+                artist: "Eric Clapton", 
+                genre: "chicago",
+                year: 1994,
+                condition: "Near Mint",
+                rarity: "common",
+                price: 1200,
+                quantity: 6
+            },
+            {
+                id: 8,
+                albumName: "Blues Breakers",
+                artist: "John Mayall & Eric Clapton",
+                genre: "chicago",
+                year: 1966,
+                condition: "Good", 
+                rarity: "grail",
+                price: 5200,
+                quantity: 4
+            }
+        ];
+        this.displayRecords();
+        console.log('✅ Inventory loaded');
     }
 
     calculatePrice(record) {
         let price = record.price;
         
-        // Condition modifiers
         const conditionMultipliers = {
             "Mint": 2.5,
             "Near Mint": 2.0,
@@ -69,7 +148,6 @@ class VinylStore {
             "Good": 1.2
         };
         
-        // Rarity multipliers
         const rarityMultipliers = {
             "grail": 4.0,
             "rare": 2.5,
@@ -113,7 +191,6 @@ class VinylStore {
         if (itemIndex > -1) {
             const item = this.cart[itemIndex];
             
-            // Restore quantity to inventory
             const inventoryItem = this.inventory.find(r => r.id === item.id);
             if (inventoryItem) {
                 inventoryItem.quantity++;
@@ -140,17 +217,13 @@ class VinylStore {
 
     saveCartToStorage() {
         localStorage.setItem('the33rdYCart', JSON.stringify(this.cart));
-        localStorage.setItem('the33rdYInventory', JSON.stringify(this.inventory));
     }
 
     loadCartFromStorage() {
         const savedCart = localStorage.getItem('the33rdYCart');
-        const savedInventory = localStorage.getItem('the33rdYInventory');
-        
         if (savedCart) {
             this.cart = JSON.parse(savedCart);
         }
-        // Don't load saved inventory - always use fresh inventory
     }
 
     displayRecords(filter = 'all') {
@@ -224,9 +297,6 @@ class VinylStore {
                 <div class="loading">
                     <i class="fas fa-shopping-bag"></i>
                     <p>Your collection is empty</p>
-                    <p class="mt-1" style="color: var(--gray); font-size: 0.9rem;">
-                        Start adding some vinyl treasures
-                    </p>
                 </div>
             `;
             this.updateCartTotal();
@@ -267,46 +337,38 @@ class VinylStore {
             const finalPrice = this.calculatePrice(record);
             const isOutOfStock = record.quantity === 0;
             
-            // Update modal content
             document.getElementById('details-title').textContent = record.albumName;
             document.getElementById('details-artist').textContent = record.artist;
             document.getElementById('details-year').textContent = record.year;
             document.getElementById('details-genre').textContent = this.formatGenre(record.genre);
             document.getElementById('details-price').textContent = `¥${finalPrice.toLocaleString()}`;
             
-            // Set condition badge
             const conditionBadge = document.getElementById('details-condition');
             conditionBadge.textContent = record.condition;
             conditionBadge.className = 'condition-badge ' + this.getConditionClass(record.condition);
             
-            // Set rarity
             const rarityElement = document.getElementById('details-rarity');
             rarityElement.textContent = record.rarity.charAt(0).toUpperCase() + record.rarity.slice(1);
             rarityElement.className = 'record-rarity rarity-' + record.rarity;
             
-            // Set stock status
             document.getElementById('details-stock').textContent = 
                 isOutOfStock ? 'Out of Stock' : `${record.quantity} available`;
             document.getElementById('details-stock').style.color = 
                 isOutOfStock ? 'var(--error)' : 'var(--success)';
             
-            // Set background image
             document.getElementById('details-header').style.backgroundImage = 
                 `url('images/record${record.id}.jpg')`;
             
-            // Update add button
             const addButton = document.getElementById('details-add-btn');
             addButton.disabled = isOutOfStock;
             addButton.innerHTML = isOutOfStock ? 
                 '<i class="fas fa-times"></i> Out of Stock' : 
                 '<i class="fas fa-shopping-bag"></i> Add to Collection';
             
-            // Store current record ID for the add button
             addButton.setAttribute('data-record-id', record.id);
             
-            // Show modal
             document.getElementById('record-details-modal').style.display = 'block';
-            document.body.style.overflow = 'hidden'; // Prevent scrolling
+            document.body.style.overflow = 'hidden';
         }
     }
 
@@ -330,7 +392,6 @@ class VinylStore {
     }
 
     showMessage(message, type = 'info') {
-        // Remove existing messages
         const existingMessage = document.querySelector('.success-message, .error-message');
         if (existingMessage) {
             existingMessage.remove();
@@ -349,7 +410,6 @@ class VinylStore {
 
     processCheckout(formData) {
         return new Promise((resolve) => {
-            // Simulate payment processing
             setTimeout(() => {
                 this.cart = [];
                 this.saveCartToStorage();
@@ -361,13 +421,11 @@ class VinylStore {
     }
 
     setupEventListeners() {
-        // Filter tabs
         document.querySelectorAll('.filter-tab').forEach(tab => {
             tab.addEventListener('click', (e) => {
                 const filter = e.target.getAttribute('data-filter');
                 this.currentFilter = filter;
                 
-                // Update active tab
                 document.querySelectorAll('.filter-tab').forEach(t => {
                     t.classList.remove('active');
                 });
@@ -377,7 +435,6 @@ class VinylStore {
             });
         });
 
-        // Smooth scrolling for navigation links
         document.querySelectorAll('a[href^="#"]').forEach(link => {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -385,13 +442,11 @@ class VinylStore {
                 const targetSection = document.getElementById(targetId);
                 
                 if (targetSection) {
-                    // Update active nav link
                     document.querySelectorAll('.nav-link').forEach(navLink => {
                         navLink.classList.remove('active');
                     });
                     link.classList.add('active');
                     
-                    // Scroll to section
                     targetSection.scrollIntoView({
                         behavior: 'smooth',
                         block: 'start'
@@ -400,7 +455,6 @@ class VinylStore {
             });
         });
 
-        // Close cart when clicking outside
         document.addEventListener('click', (e) => {
             const cart = document.getElementById('cart');
             const cartIcon = document.querySelector('.cart-icon');
@@ -423,12 +477,8 @@ class VinylStore {
 function scrollToSection(sectionId) {
     const section = document.getElementById(sectionId);
     if (section) {
-        section.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-        });
+        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
         
-        // Update active nav link
         document.querySelectorAll('.nav-link').forEach(link => {
             link.classList.remove('active');
         });
@@ -476,7 +526,6 @@ function processPayment() {
         closeCheckout();
         toggleCart();
         
-        // Reset form
         document.getElementById('checkout-name').value = '';
         document.getElementById('checkout-email').value = '';
         document.getElementById('checkout-address').value = '';
@@ -488,10 +537,9 @@ function validateEmail(email) {
     return re.test(email);
 }
 
-// Record Details Modal Functions - FIXED CLOSE BUTTON
 function closeRecordDetails() {
     document.getElementById('record-details-modal').style.display = 'none';
-    document.body.style.overflow = 'auto'; // Re-enable scrolling
+    document.body.style.overflow = 'auto';
 }
 
 function addFromDetails() {
@@ -503,7 +551,6 @@ function addFromDetails() {
     }
 }
 
-// Close modal when clicking outside
 document.addEventListener('click', (e) => {
     const modal = document.getElementById('record-details-modal');
     if (e.target === modal) {
@@ -511,7 +558,6 @@ document.addEventListener('click', (e) => {
     }
 });
 
-// Close modal with Escape key
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
         closeRecordDetails();
@@ -519,15 +565,17 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
-// Initialize store when DOM is loaded
 let store;
 let scrollAnimations;
 
 document.addEventListener('DOMContentLoaded', () => {
     store = new VinylStore();
+    // Force cart to be hidden on page load
+    const cart = document.getElementById('cart');
+    if (cart) cart.classList.remove('active');
+    
     scrollAnimations = new ScrollAnimations();
     
-    // Add scroll effect to navbar
     window.addEventListener('scroll', () => {
         const navbar = document.querySelector('.navbar');
         if (window.scrollY > 100) {
@@ -540,7 +588,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// Make functions available globally
 window.scrollToSection = scrollToSection;
 window.toggleCart = toggleCart;
 window.openCheckout = openCheckout;
